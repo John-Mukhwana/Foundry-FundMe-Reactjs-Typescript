@@ -1,0 +1,21 @@
+{
+  "include": ["src/**/*", "*.ts", "*.tsx"],
+  "exclude": ["node_modules", "build", "dist", "server", "shared", "**/*.test.ts"],
+  "compilerOptions": {
+    "incremental": true,
+    
+    "noEmit": true,
+    "module": "ESNext",
+    "strict": true,
+    "lib": ["es2020", "dom", "dom.iterable"],
+    "target": "es2020",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+  "types": ["vite/client"],
+    
+  }
+}
