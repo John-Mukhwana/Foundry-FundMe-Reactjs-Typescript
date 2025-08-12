@@ -79,6 +79,10 @@ export default function FundersList() {
     }
   }, [ethPrice]);
 
+  // Calculate total funded ETH and USD
+  const totalEth = funders.reduce((sum, f) => sum + f.ethAmount, 0);
+  const totalUsd = funders.reduce((sum, f) => sum + f.usdAmount, 0);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -87,11 +91,25 @@ export default function FundersList() {
     >
       <Card className="bg-white dark:bg-neutral-800 shadow-md">
         <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-heading font-semibold text-neutral-800 dark:text-neutral-100 flex items-center space-x-2">
-              <Users className="w-5 h-5 text-secondary-500" />
-              <span>Funders</span>
-            </h2>
+          {/* Total Funded Section */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <div
+                className="text-2xl font-bold text-primary-500"
+                data-testid="text-total-eth"
+              >
+                {totalEth.toFixed(4)} ETH
+              </div>
+              <div
+                className="text-lg text-neutral-500 dark:text-neutral-400"
+                data-testid="text-total-usd"
+              >
+                {formatEthToUsd(totalEth, ethPrice)}
+              </div>
+              <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                Total Funded
+              </div>
+            </div>
             <Badge variant="secondary" className="bg-accent-500 text-white">
               {funders.length}
             </Badge>
