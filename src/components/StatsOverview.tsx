@@ -47,11 +47,16 @@ export default function StatsOverview() {
   const stats = [
     {
       title: "Total Funded",
-      value: `${totalFunded.toFixed(2)} ETH`,
-      subtitle: formatEthToUsd(totalFunded, ethPrice),
+      value: `${totalFunded.toFixed(4)} ETH`,
+      subtitle: `${formatEthToUsd(totalFunded, ethPrice)}`,
       icon: DollarSign,
       color: "bg-accent-500",
       testId: "text-total-funded",
+      extra: (
+        <div className="text-lg text-primary-500 font-bold mt-1" data-testid="text-total-eth">
+          {totalEth.toFixed(4)} ETH
+        </div>
+      ),
     },
     {
       title: "Total Funders",

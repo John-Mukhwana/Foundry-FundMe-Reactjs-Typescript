@@ -13,6 +13,7 @@ import { toast } from '@/hooks/use-toast';
 
 export default function FundSection() {
   const [ethAmount, setEthAmount] = useState('');
+  const [usdAmount, setUsdAmount] = useState('');
   const [usdEquivalent, setUsdEquivalent] = useState(0);
   const { address } = useAccount();
   
@@ -33,7 +34,14 @@ export default function FundSection() {
     const ethValue = parseFloat(ethAmount) || 0;
     const usdValue = ethValue * ethPrice;
     setUsdEquivalent(usdValue);
-  }, [ethAmount, ethPrice]);
+    if (usdAmount !== '') {
+      // If user entered USD, update ETH field
+      const usdVal = parseFloat(usdAmount) || 0;
+      if (ethPrice > 0) {
+        setEthAmount((usdVal / ethPrice).toFixed(4));
+      }
+    }
+  }, [ethAmount, ethPrice, usdAmount]);
 
   // Handle transaction success
   useEffect(() => {
@@ -115,6 +123,27 @@ export default function FundSection() {
             </h2>
             
             <div className="space-y-4">
+              {/* USD Amount Input */}
+              <div>
+                <Label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  USD Amount
+                </Label>
+                <div className="relative">
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    value={usdAmount}
+                    onChange={(e) => setUsdAmount(e.target.value)}
+                    className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors text-lg font-mono pr-16"
+                    data-testid="input-usd-amount"
+                  />
+                  <div className="absolute right-3 top-3">
+                    <span className="text-neutral-500 dark:text-neutral-400 font-medium">USD</span>
+                  </div>
+                </div>
+              </div>
               {/* ETH Amount Input */}
               <div>
                 <Label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">

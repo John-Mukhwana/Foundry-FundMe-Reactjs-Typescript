@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Sun, Moon, Zap, Wallet } from "lucide-react";
+import { Zap, Wallet, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { useAccount, useChainId, useSwitchChain, useDisconnect } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import { truncateAddress } from "@/utils/format";
-import { SEPOLIA_CHAIN_ID } from "@/utils/constants";
+import { SEPOLIA_CHAIN_ID, FUNDME_CONTRACT_ADDRESS } from "@/utils/constants";
 
 export default function Header() {
-  const { isDark, toggleDarkMode } = useDarkMode();
+  // Removed dark mode logic
+  const [menuOpen, setMenuOpen] = useState(false);
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
@@ -40,28 +41,32 @@ export default function Header() {
   const handleDisconnect = () => {
     disconnect();
     close(); // Close the wallet modal after disconnect
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
   };
 
   useEffect(() => {
-    if (!isConnected) {
-      setWalletCleared(true);
-      // Optionally, clear other wallet-related state here
-    } else {
-      setWalletCleared(false);
-    }
-  }, [isConnected]);
+      if (!isConnected) {
+        setWalletCleared(true);
+        // Optionally, clear other wallet-related state here
+      } else {
+        setWalletCleared(false);
+        close(); // Close wallet modal after successful connection
+      }
+    }, [isConnected, close]);
 
   return (
     <motion.header
-      className="bg-primary-500 shadow-sm sticky top-0 z-50"
+      className="bg-primary-500 shadow-sm sticky top-0 z-50 w-full"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-center py-4 w-full">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 mb-3 sm:mb-0">
             <div className="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center">
               <Zap className="w-5 h-5 text-white" />
             </div>
@@ -70,7 +75,28 @@ export default function Header() {
             </h1>
           </div>
 
-          <div className="flex items-center space-x-4">
+          {/* Hamburger menu for small screens */}
+          <div className="sm:hidden flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="p-2 text-white hover:bg-primary-600 rounded-lg transition-colors"
+              aria-label="Toggle menu"
+              data-testid="button-toggle-menu"
+            >
+              <Menu className="w-6 h-6" />
+            </Button>
+          </div>
+          {/* Main nav buttons, responsive */}
+          <div className={`flex flex-wrap gap-2 sm:gap-4 items-center justify-center sm:justify-end w-full sm:w-auto overflow-x-auto ${menuOpen ? '' : 'hidden sm:flex'}`}>
+            <Button
+              onClick={() => window.open(`https://sepolia.etherscan.io/address/${FUNDME_CONTRACT_ADDRESS}`, '_blank')}
+              className="bg-secondary-500 hover:bg-secondary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+              data-testid="button-view-transactions"
+            >
+              <span>View Transactions</span>
+            </Button>
             {/* Network Status */}
             {isConnected && (
               <div className="hidden sm:flex items-center space-x-2">
@@ -94,21 +120,6 @@ export default function Header() {
               </div>
             )}
 
-            {/* Dark Mode Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleDarkMode}
-              className="p-2 text-white hover:bg-primary-600 rounded-lg transition-colors"
-              aria-label="Toggle dark mode"
-              data-testid="button-toggle-theme"
-            >
-              {isDark ? (
-                <Moon className="w-5 h-5" />
-              ) : (
-                <Sun className="w-5 h-5" />
-              )}
-            </Button>
 
             {/* Wallet Connect & Disconnect Buttons */}
             {isConnected ? (

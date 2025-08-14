@@ -77,6 +77,16 @@ export default function FundersList() {
     >
       <Card className="bg-white dark:bg-neutral-800 shadow-md">
         <CardContent className="p-6">
+
+          {/* Title and Icon */}
+          <div className="flex items-center mb-6 space-x-2">
+            <Users className="w-6 h-6 text-accent-500" />
+            <h2 className="text-xl font-heading font-semibold text-neutral-800 dark:text-neutral-100">List of Funders</h2>
+          </div>
+           {/* Number of Funders */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-semibold text-neutral-600 dark:text-neutral-300">Funders: {parsedFunders.length}</span>
+          </div>
           {/* Total Funded Section */}
           <div className="flex items-center justify-between mb-6">
             <div>
