@@ -1,6 +1,6 @@
 // FundMe Smart Contract Details
 export const FUNDME_CONTRACT_ADDRESS =
-  "0xB86B13545D5fD3B68F9704f5a32A4EC5D85a8A66" as const;
+  "0xc077A97461A1053150193edFBfEDb07Be1677c00" as const;
 export const SEPOLIA_CHAIN_ID = 11155111;
 
 // FundMe Contract ABI
@@ -84,6 +84,30 @@ export const FUNDME_ABI = [
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getFundersWithAmounts",
+    outputs: [
+      { internalType: "address[]", name: "", type: "address[]" },
+      { internalType: "uint256[]", name: "", type: "uint256[]" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getFundersCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalFunded",
+    outputs: [{ internalType: "uint256", name: "total", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;

@@ -22,66 +22,52 @@ interface Funder {
 }
 
 export default function FundersList() {
-  const [funders, setFunders] = useState<Funder[]>([]);
+  const [fundersState, setFundersState] = useState<Funder[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const { priceFeed } = useFundMeContract();
   const { ethPrice } = useEthPrice(priceFeed as `0x${string}`);
 
-  useEffect(() => {
-    async function fetchFunders() {
-      setIsLoading(true);
-      try {
-        // Get funders count
-        const { data: fundersCount } = useReadContract({
-          address: FUNDME_CONTRACT_ADDRESS,
-          abi: FUNDME_ABI,
-          functionName: "getFundersCount",
-        });
-        if (!fundersCount) {
-          setFunders([]);
-          setIsLoading(false);
-          return;
-        }
-        const fundersArr: Funder[] = [];
-        for (let i = 0; i < Number(fundersCount); i++) {
-          const { data: funderAddress } = useReadContract({
-            address: FUNDME_CONTRACT_ADDRESS,
-            abi: FUNDME_ABI,
-            functionName: "getFunder",
-            args: [BigInt(i)],
-          });
-          if (!funderAddress) continue;
-          const { data: amountFunded } = useReadContract({
-            address: FUNDME_CONTRACT_ADDRESS,
-            abi: FUNDME_ABI,
-            functionName: "getAddressToAmountFunded",
-            args: [funderAddress],
-          });
-          const ethAmount = amountFunded
-            ? Number(formatWeiToEth(BigInt(amountFunded)))
-            : 0;
-          fundersArr.push({
-            address: funderAddress,
-            amount: BigInt(amountFunded || 0),
-            ethAmount,
-            usdAmount: ethAmount * ethPrice,
-          });
-        }
-        setFunders(fundersArr);
-      } catch (err) {
-        setFunders([]);
-      }
-      setIsLoading(false);
+  // Use new contract function to get all funders and their amounts
+  const { data: fundersWithAmounts, isLoading: isFundersLoading } =
+    useReadContract({
+      address: FUNDME_CONTRACT_ADDRESS,
+      abi: FUNDME_ABI,
+      functionName: "getFundersWithAmounts",
+    });
+
+  // Use new contract function to get total funded
+  const { data: totalFunded } = useReadContract({
+    address: FUNDME_CONTRACT_ADDRESS,
+    abi: FUNDME_ABI,
+    functionName: "getTotalFunded",
+  });
+
+  // Parse funders and amounts
+  const parsedFunders: Funder[] = [];
+  if (
+    fundersWithAmounts &&
+    Array.isArray(fundersWithAmounts[0]) &&
+    Array.isArray(fundersWithAmounts[1])
+  ) {
+    for (let i = 0; i < fundersWithAmounts[0].length; i++) {
+      const address = fundersWithAmounts[0][i];
+      const amount = BigInt(fundersWithAmounts[1][i]);
+      const ethAmount = Number(formatWeiToEth(amount));
+      parsedFunders.push({
+        address,
+        amount,
+        ethAmount,
+        usdAmount: ethAmount * ethPrice,
+      });
     }
-    if (ethPrice > 0) {
-      fetchFunders();
-    }
-  }, [ethPrice]);
+  }
 
   // Calculate total funded ETH and USD
-  const totalEth = funders.reduce((sum, f) => sum + f.ethAmount, 0);
-  const totalUsd = funders.reduce((sum, f) => sum + f.usdAmount, 0);
+  const totalEth = totalFunded
+    ? Number(formatWeiToEth(BigInt(totalFunded)))
+    : 0;
+  const totalUsd = totalEth * ethPrice;
 
   return (
     <motion.div
@@ -111,7 +97,7 @@ export default function FundersList() {
               </div>
             </div>
             <Badge variant="secondary" className="bg-accent-500 text-white">
-              {funders.length}
+              {parsedFunders.length}
             </Badge>
           </div>
 
@@ -119,7 +105,7 @@ export default function FundersList() {
             className="space-y-3 max-h-96 overflow-y-auto"
             data-testid="list-funders"
           >
-            {funders.length === 0 && !isLoading ? (
+            {parsedFunders.length === 0 && !isFundersLoading ? (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-neutral-400 mx-auto mb-3" />
                 <p className="text-neutral-500 dark:text-neutral-400">
@@ -127,7 +113,7 @@ export default function FundersList() {
                 </p>
               </div>
             ) : (
-              funders.map((funder, index) => (
+              parsedFunders.map((funder, index) => (
                 <motion.div
                   key={`${funder.address}-${index}`}
                   className="flex items-center justify-between p-3 bg-gradient-crypto rounded-lg"
@@ -173,7 +159,7 @@ export default function FundersList() {
               ))
             )}
 
-            {isLoading && (
+            {isFundersLoading && (
               <div className="flex justify-center py-4">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-accent-500"></div>
               </div>
