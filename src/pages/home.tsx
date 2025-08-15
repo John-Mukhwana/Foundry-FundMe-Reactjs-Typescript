@@ -8,6 +8,7 @@ import FundersList from '@/components/FundersList';
 import OwnerPanel from '@/components/OwnerPanel';
 import StatsOverview from '@/components/StatsOverview';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import  Footer from '@/components/Footer'; 
 
 export default function Home() {
   return (
@@ -72,6 +73,11 @@ export default function Home() {
 
       {/* Confirmation Modal */}
       <ConfirmationModal />
+
+      {/* Footer */}
+      <Footer />
     </div>
+
+
   );
 }
