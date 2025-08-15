@@ -2,6 +2,11 @@
 
 FundMe is a modern, decentralized funding platform built with React, TypeScript, Vite, and Tailwind CSS. It allows users to fund innovative projects securely on the Ethereum Sepolia testnet.
 
+---
+![FundeMe Frontend](./public/photo1.png)
+
+----
+
 ## Features
 - Connect your Ethereum wallet
 - View contract statistics and funding progress
