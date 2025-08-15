@@ -3,8 +3,10 @@ import { sepolia } from "viem/chains";
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 
+
 // Get projectId from environment variables
 const projectId = import.meta.env.VITE_REOWN_PROJECT_ID;
+const SEPOLIA_RPC_URL = import.meta.env.VITE_SEPOLIA_RPC_URL;
 
 // Create wagmi adapter
 const wagmiAdapter = new WagmiAdapter({
@@ -17,7 +19,7 @@ export const config = createConfig({
   chains: [sepolia],
   transports: {
     [sepolia.id]: http(
-      "https://eth-sepolia.g.alchemy.com/v2/bpjlR4lki1rwWSUddx2ot"
+  SEPOLIA_RPC_URL
     ),
   },
 });

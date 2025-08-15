@@ -18,7 +18,8 @@ import {
   LineElement,
   Tooltip,
   Title,
-  Legend
+  Legend,
+  Filler
 } from 'chart.js';
 
 ChartJS.register(
@@ -28,7 +29,8 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Title,
-  Legend
+  Legend,
+  Filler
 );
 
 interface FundingDataPoint {
