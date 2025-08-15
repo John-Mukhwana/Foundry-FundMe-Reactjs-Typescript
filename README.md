@@ -39,5 +39,22 @@ FundMe is a modern, decentralized funding platform built with React, TypeScript,
 - Update contract addresses and logic in `src/lib/wagmi.ts` and related files.
 - Style and theme via `src/index.css` and `tailwind.config.ts`.
 
+## Environment Variables
+
+To run this project, you need to create a `.env` file in the root directory with the following variables:
+
+```
+VITE_ALCHEMY_KEY=your-alchemy-key
+VITE_REOWN_PROJECT_ID=your-reown-project-id
+VITE_SEPOLIA_RPC_URL=https://sepolia.rpc.thirdweb.com
+```
+
+**Descriptions:**
+- `VITE_ALCHEMY_KEY`: Your Alchemy API key for accessing Ethereum Sepolia nodes (used for backend scripts or advanced features).
+- `VITE_REOWN_PROJECT_ID`: Your Reown AppKit project ID for wallet connection and modal integration.
+- `VITE_SEPOLIA_RPC_URL`: The Sepolia RPC endpoint for frontend contract interactions. Use a CORS-enabled public RPC like Thirdweb.
+
+Make sure to keep your keys secure and never commit your `.env` file to public repositories.
+
 ## License
 MIT
