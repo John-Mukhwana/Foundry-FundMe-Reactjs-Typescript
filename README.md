@@ -3,7 +3,7 @@
 FundMe is a modern, decentralized funding platform built with React, TypeScript, Vite, and Tailwind CSS. It allows users to fund innovative projects securely on the Ethereum Sepolia testnet.
 
 ---
-![FundeMe Frontend](./public/photo1.png)
+![FundeMe Frontend](./public/foundry.PNG)
 
 ----
 
@@ -61,5 +61,8 @@ VITE_SEPOLIA_RPC_URL=https://sepolia.rpc.thirdweb.com
 
 Make sure to keep your keys secure and never commit your `.env` file to public repositories.
 
+---
+![FundeMe Frontend](./public/fundme2.PNG)
+---
 ## License
 MIT
