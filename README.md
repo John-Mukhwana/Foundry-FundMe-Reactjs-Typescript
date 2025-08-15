@@ -1,5 +1,7 @@
 # FundMe - Decentralized Funding Platform
 
+[🛠 Foundry FundMe Smart Contract GitHub](https://github.com/John-Mukhwana/solidity-foundry-fund-me.git)
+
 FundMe is a modern, decentralized funding platform built with React, TypeScript, Vite, and Tailwind CSS. It allows users to fund innovative projects securely on the Ethereum Sepolia testnet.
 
 ---
