@@ -1,14 +1,8 @@
 {
-  "redirects": [
-    {
-      "source": "/api/*",
-      "destination": "/api/:splat",
-      "statusCode": 200
-    },
+  "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html",
-      "statusCode": 200
+      "destination": "/index.html"
     }
   ]
 }
