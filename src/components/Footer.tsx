@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="w-full bg-gray-900 text-white py-6 mt-12 border-t border-gray-800">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4 px-4">
         <div className="flex flex-col items-center md:items-start">
-          <span className="font-semibold text-lg">Developed by cypherpulse.base.eth</span>
+          <span className="font-semibold text-lg">Developed By cypherpulse.base.eth</span>
           <a
             href="https://github.com/John-Mukhwana"
             target="_blank"
